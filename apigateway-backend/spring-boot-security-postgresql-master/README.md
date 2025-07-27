@@ -1,134 +1,245 @@
-# Spring Boot, Spring Security, PostgreSQL: JWT Authentication & Authorization example
 
-## User Registration, User Login and Authorization process.
-The diagram shows flow of how we implement User Registration, User Login and Authorization process.
 
-![spring-boot-spring-security-postgresql-jwt-authentication-flow](spring-boot-spring-security-postgresql-jwt-authentication-flow.png)
+* ✅ Setup steps
+* ✅ Screenshots (Postman or UI)
+* ✅ API testing (registration, login, save API, fetch response)
+* ✅ CI/CD & hosting
+* ✅ Factory Pattern explanation
+* ✅ Full configuration guide for new developers
 
-## Spring Boot Server Architecture with Spring Security
-You can have an overview of our Spring Boot Server with the diagram below:
 
-![spring-boot-spring-security-postgresql-jwt-authentication-architecture](spring-boot-spring-security-postgresql-jwt-authentication-architecture.png)
 
-## Configure Spring Datasource, JPA, App properties
-Open `src/main/resources/application.properties`
+## 📌 Features
 
+- 🔐 User Registration & Login with JWT token-based authentication
+- 🌐 Add public JSON API URLs and save responses
+- 📦 Store all user data, APIs, and responses in PostgreSQL
+- 🧠 Uses Factory Pattern for handling different API parsing strategies
+- ✅ Clean MVC structure (Controller, Service, Repository)
+- 🔧 Deployed using Render (or Railway/Fly.io)
+- 🔄 CI/CD pipeline setup with GitHub Actions (or GitLab CI)
+
+---
+
+## 🚀 Getting Started
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/riteshsinghrajput017-ship-it/Java-Spring-Boot-Showcase-Assignment.git
+cd Java-Spring-Boot-Showcase-Assignment
+````
+
+### 2️⃣ Setup Environment Variables
+
+Edit `application.properties`:
+
+```properties
+# PostgreSQL
+spring.datasource.url=jdbc:postgresql://localhost:5432/your_db
+spring.datasource.username=your_username
+spring.datasource.password=your_password
+
+# JWT
+app.jwtSecret=your_jwt_secret_key
+app.jwtExpirationMs=3600000
 ```
-spring.datasource.url= jdbc:postgresql://localhost:5432/testdb
-spring.datasource.username= postgres
-spring.datasource.password= 123
 
-spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation= true
-spring.jpa.properties.hibernate.dialect= org.hibernate.dialect.PostgreSQLDialect
+---
 
-# Hibernate ddl auto (create, create-drop, validate, update)
-spring.jpa.hibernate.ddl-auto= update
+## 🛠️ Build & Run Locally
 
-# App Properties
-bezkoder.app.jwtSecret= ======================BezKoder=Spring===========================
-bezkoder.app.jwtExpirationMs= 86400000
+```bash
+./mvnw clean install
+./mvnw spring-boot:run
 ```
 
-## Run Spring Boot application
-```
+OR
+
+```bash
+mvn clean install
 mvn spring-boot:run
 ```
 
-## Run following SQL insert statements
+---
+
+## 📬 API Endpoints
+
+| Method | Endpoint             | Description                   |
+| ------ | -------------------- | ----------------------------- |
+| POST   | `/api/auth/register` | Register new user             |
+| POST   | `/api/auth/login`    | Authenticate & get JWT token  |
+| POST   | `/api/url/add`       | Save public API URL           |
+| GET    | `/api/url/all`       | Fetch all saved API responses |
+
+> ✅ All protected endpoints require `Authorization: Bearer <token>` in headers
+
+---
+
+## 🧪 Sample API Usage (Postman)
+
+### ✅ 1. Register User
+
+**POST** `/api/auth/register`
+
+**Request Body:**
+
+```json
+{
+  "username": "ritesh",
+  "email": "ritesh@example.com",
+  "password": "secure123"
+}
 ```
-INSERT INTO roles(name) VALUES('ROLE_USER');
-INSERT INTO roles(name) VALUES('ROLE_MODERATOR');
-INSERT INTO roles(name) VALUES('ROLE_ADMIN');
+
+
+
+
+
+---
+
+### ✅ 2. Login to Get Token
+
+**POST** `/api/auth/login`
+
+**Request Body:**
+
+```json
+{
+  "username": "ritesh",
+  "password": "secure123"
+}
 ```
 
-For more detail, please visit:
-> [Spring Boot, Spring Security, PostgreSQL: JWT Authentication & Authorization example](https://bezkoder.com/spring-boot-security-postgresql-jwt-authentication/)
+**Response:**
 
-> [For MySQL](https://bezkoder.com/spring-boot-jwt-authentication/)
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI..."
+}
+```
 
-> [For MongoDB](https://bezkoder.com/spring-boot-jwt-auth-mongodb/)
 
-## Refresh Token
+---
 
-![spring-boot-refresh-token-jwt-example-flow](spring-boot-refresh-token-jwt-example-flow.png)
+### ✅ 3. Add Public API URL
 
-For instruction: [Spring Boot Refresh Token with JWT example](https://bezkoder.com/spring-boot-refresh-token-jwt/)
+**POST** `/api/url/add`
+**Headers:**
 
-## More Practice:
-> [Spring Boot File upload example with Multipart File](https://bezkoder.com/spring-boot-file-upload/)
+```
+Authorization: Bearer <your_token>
+```
 
-> [Exception handling: @RestControllerAdvice example in Spring Boot](https://bezkoder.com/spring-boot-restcontrolleradvice/)
+**Body:**
 
-> [Spring Boot Repository Unit Test with @DataJpaTest](https://bezkoder.com/spring-boot-unit-test-jpa-repo-datajpatest/)
+```json
+{
+  "url": "https://jsonplaceholder.typicode.com/todos/1"
+}
+```
 
-> [Spring Boot Rest Controller Unit Test with @WebMvcTest](https://www.bezkoder.com/spring-boot-webmvctest/)
 
-> [Spring Boot Pagination & Sorting example](https://www.bezkoder.com/spring-boot-pagination-sorting-example/)
+---
 
-> Validation: [Spring Boot Validate Request Body](https://www.bezkoder.com/spring-boot-validate-request-body/)
+### ✅ 4. Fetch Stored Responses
 
-> Documentation: [Spring Boot and Swagger 3 example](https://www.bezkoder.com/spring-boot-swagger-3/)
+**GET** `/api/url/all`
+**Headers:**
 
-> Caching: [Spring Boot Redis Cache example](https://www.bezkoder.com/spring-boot-redis-cache-example/)
+```
+Authorization: Bearer <your_token>
+```
 
-Associations:
-> [Spring Boot One To Many example with Spring JPA, Hibernate](https://www.bezkoder.com/jpa-one-to-many/)
 
-> [Spring Boot Many To Many example with Spring JPA, Hibernate](https://www.bezkoder.com/jpa-many-to-many/)
 
-> [JPA One To One example with Spring Boot](https://www.bezkoder.com/jpa-one-to-one/)
+---
 
-## Fullstack Authentication
+## 🧱 Factory Pattern Explained
 
-> [Spring Boot + Vue.js JWT Authentication](https://bezkoder.com/spring-boot-vue-js-authentication-jwt-spring-security/)
+We implemented a **Service Factory** to handle different API response strategies.
 
-> [Spring Boot + Angular 8 JWT Authentication](https://bezkoder.com/angular-spring-boot-jwt-auth/)
+Example:
 
-> [Spring Boot + Angular 10 JWT Authentication](https://bezkoder.com/angular-10-spring-boot-jwt-auth/)
+* `JsonPlaceholderService` for JSONPlaceholder
+* `WeatherApiService` for OpenWeatherMap
 
-> [Spring Boot + Angular 11 JWT Authentication](https://bezkoder.com/angular-11-spring-boot-jwt-auth/)
+The factory chooses the parser implementation at runtime based on the API source.
 
-> [Spring Boot + Angular 12 JWT Authentication](https://www.bezkoder.com/angular-12-spring-boot-jwt-auth/)
+---
 
-> [Spring Boot + Angular 13 JWT Authentication](https://www.bezkoder.com/angular-13-spring-boot-jwt-auth/)
+## 🏗️ Project Structure (MVC)
 
-> [Spring Boot + Angular 14 JWT Authentication](https://www.bezkoder.com/angular-14-spring-boot-jwt-auth/)
+```
+src/
+├── controller/
+├── service/
+│   ├── factory/
+│   ├── impl/
+├── model/
+├── dto/
+├── repository/
+├── security/
+│   ├── JWTFilter
+│   └── AuthEntryPoint
+└── config/
+```
 
-> [Spring Boot + Angular 15 JWT Authentication](https://www.bezkoder.com/angular-15-spring-boot-jwt-auth/)
+---
 
-> [Spring Boot + Angular 16 JWT Authentication](https://www.bezkoder.com/angular-16-spring-boot-jwt-auth/)
+## 🔐 JWT Security Flow
 
-> [Spring Boot + Angular 17 JWT Authentication](https://www.bezkoder.com/angular-17-spring-boot-jwt-auth/)
+* Login/Register returns a JWT token.
+* All secured endpoints check the token using a filter.
+* Token is passed in `Authorization: Bearer <token>` header.
 
-> [Spring Boot + React JWT Authentication](https://bezkoder.com/spring-boot-react-jwt-auth/)
+---
 
-## Fullstack CRUD App
+## 🧵 CI/CD
 
-> [Vue.js + Spring Boot + PostgreSQL example](https://www.bezkoder.com/spring-boot-vue-js-postgresql/)
+CI/CD pipeline is configured using **GitHub Actions** or **GitLab CI** to:
 
-> [Angular 8 + Spring Boot + PostgreSQL example](https://bezkoder.com/angular-spring-boot-postgresql/)
+* Run build and tests on every push
+* Auto-deploy to Render (or Railway)
 
-> [Angular 10 + Spring Boot + PostgreSQL example](https://bezkoder.com/angular-10-spring-boot-postgresql/)
+📷 *Screenshot: CI pipeline execution*
 
-> [Angular 11 + Spring Boot + PostgreSQL example](https://bezkoder.com/angular-11-spring-boot-postgresql/)
 
-> [Angular 12 + Spring Boot + PostgreSQL example](https://www.bezkoder.com/angular-12-spring-boot-postgresql/)
 
-> [Angular 13 + Spring Boot + PostgreSQL example](https://www.bezkoder.com/spring-boot-angular-13-postgresql/)
+## 📸 Screenshots (Postman)
 
-> [Angular 14 + Spring Boot + PostgreSQL example](https://www.bezkoder.com/spring-boot-angular-14-postgresql/)
+* ✅ User registered
+* ✅ JWT token received
+* ✅ API added
+* ✅ Response fetched
 
-> [Angular 15 + Spring Boot + PostgreSQL example](https://www.bezkoder.com/spring-boot-angular-15-postgresql/)
+> Add these images in a `/screenshots` folder and reference like:
 
-> [Angular 16 + Spring Boot + PostgreSQL example](https://www.bezkoder.com/spring-boot-angular-16-postgresql/)
 
-> [Angular 17 + Spring Boot + PostgreSQL example](https://www.bezkoder.com/spring-boot-angular-17-postgresql/)
+![Token-Username-Passwors Fetched](https://github.com/user-attachments/assets/2d11cf0a-abf1-4edb-b20e-9c3ac5710d66)
+![Token-Username-Email Fetched](https://github.com/user-attachments/assets/2c3c18e7-0590-4f47-a5a7-7465a7693da5)
+![ID-URL Fetched Succesfully](https://github.com/user-attachments/assets/4da0bf76-e2f7-476a-b33f-32a74ba4db82)
+![User Registered Succesfully](https://github.com/user-attachments/assets/97947fd8-911e-4626-9de1-b8c3c10669bd)
 
-> [React + Spring Boot + PostgreSQL example](https://bezkoder.com/spring-boot-react-postgresql/)
+## 🧑‍💻 Contributing (for new developers)
 
-Run both Back-end & Front-end in one place:
-> [Integrate Angular with Spring Boot Rest API](https://bezkoder.com/integrate-angular-spring-boot/)
+1. Clone the repo
+2. Setup your DB & `application.properties`
+3. Register/login to get token
+4. Add your APIs
+5. Check saved data
+6. To test, use Postman collection included in `/postman` folder
 
-> [Integrate React.js with Spring Boot Rest API](https://bezkoder.com/integrate-reactjs-spring-boot/)
+---
 
-> [Integrate Vue.js with Spring Boot Rest API](https://bezkoder.com/integrate-vue-spring-boot/)
+## 📄 License
+
+This project is for educational showcase purposes.
+
+---
+
+## 📞 Contact
+
+Ritesh Thakur
+📧 [ritesh@example.com](mailto:riteshsinghrajput017@gmail.com)
+🔗 [LinkedIn](https://www.linkedin.com/in/ritesh-thakur-061825251/)
